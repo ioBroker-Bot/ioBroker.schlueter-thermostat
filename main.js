@@ -4,18 +4,19 @@
 // schlueter-thermostat
 // Cloud-only adapter for OJ Microline / Schlüter OWD5/OCD5
 //
-// Structure:
-// groups.<GroupId>              (device, name = GroupName)
-//   .thermostats                (channel)
-//     .<ThermostatId>           (device, name = ThermostatName)
-//        .temperature.*         (read-only)
-//        .setpoint.*            (read-only)
-//        .regulationMode        (read-only)
-//        .endTime.*             (read-only; shown as thermostat-local no-Z)
-//        .vacation.*            (read-only)
-//        .schedule.*            (read-only)
-//        .energy.*              (read-only)
-//        .apply.*               (writeable controls; apply-only)
+// Object hierarchy  (folder → folder → folder → device → channel → state):
+// groups                        (folder)
+//   .<GroupId>                  (folder, name = GroupName)
+//     .thermostats              (folder)
+//       .<ThermostatId>         (device, name = ThermostatName)
+//          .temperature         (channel)  → room, floor
+//          .setpoint            (channel)  → manual, comfort
+//          .regulationMode      (state, read-only)
+//          .endTime             (channel)  → comfort, boost
+//          .vacation            (channel)  → enabled, begin, end, temperature
+//          .schedule            (channel)  → day<N> (folder) → event<N> (folder)
+//          .energy              (channel)  → count, value0 …
+//          .apply               (channel)  → <mode> (folder) → states
 //
 // Robustness:
 // - Poll interval min 10s, clamp to Node max timer
@@ -35,7 +36,7 @@ const utils = require('@iobroker/adapter-core');
 const { OJClient } = require('./lib/oj-client');
 const { safeId } = require('./lib/util');
 
-const { ensureGroupObjects, ensureThermostatObjects, ensureApplyObjects } = require('./lib/objects');
+const { ensureContainer, ensureGroupObjects, ensureThermostatObjects, ensureApplyObjects } = require('./lib/objects');
 const { toThermostatLocalNoZFromAny } = require('./lib/time');
 const {
 	writeThermostatStates,
@@ -336,7 +337,7 @@ class SchlueterThermostat extends utils.Adapter {
 			return;
 		}
 
-		await this.safeSetObjectNotExists('groups', { type: 'channel', common: { name: 'Groups' }, native: {} });
+		await ensureContainer(this, 'groups', 'folder', 'Groups');
 
 		// Cleanup legacy object tree from old versions (optional via config)
 		if (this.config.legacyCleanup === true) {
@@ -356,8 +357,8 @@ class SchlueterThermostat extends utils.Adapter {
 
 		await this.pollOnce();
 
-		// Subscribe ONLY apply buttons
-		this.subscribeStates('groups.*.thermostats.*.apply.*.apply');
+		// Subscribe all writable states under apply folders (buttons + values)
+		this.subscribeStates('groups.*.thermostats.*.apply.*.*');
 
 		this._scheduleNextPoll();
 	}
@@ -628,8 +629,9 @@ class SchlueterThermostat extends utils.Adapter {
 			return;
 		}
 
-		// only apply buttons
+		// Writable value states (e.g. setpoint, durationMinutes): acknowledge receipt
 		if (!id.endsWith('.apply')) {
+			this.safeSetState(id, { val: state.val, ack: true });
 			return;
 		}
 
