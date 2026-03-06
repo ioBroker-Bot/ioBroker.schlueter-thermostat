@@ -112,6 +112,11 @@ flowchart TB
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+- (patricknitsch) Fix adapter type in io-package.json
+
 ### 0.4.2 (2026-03-06)
 
 - (claude) Fixed object hirarchy
