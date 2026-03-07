@@ -1,4 +1,4 @@
-![Logo](admin/schlueter-thermostat.png)
+<img src="admin/schlueter-thermostat.png" alt="Logo" width="256" />
 
 # ioBroker.schlueter-thermostat
 
