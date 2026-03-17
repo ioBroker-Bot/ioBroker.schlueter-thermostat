@@ -28,8 +28,6 @@ It is based on the HA Integration from @robbinjanssen. For more informations see
 
 Each adapter instance exposes a dedicated **control panel** tab directly inside the ioBroker Admin UI.
 
-![Admin Tab](https://github.com/user-attachments/assets/2cecf7c3-7380-4225-9a82-ee4176091234)
-
 ### Features
 
 | Area | What you can do |
