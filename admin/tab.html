@@ -967,7 +967,7 @@ function openConfig() {
     const urlParams = new URLSearchParams(window.location.search);
     const instNum = urlParams.get('instance') || '0';
     const url = window.location.origin + '/#/tab-instances/schlueter-thermostat.' + instNum;
-    window.open(url, '_blank');
+    window.parent.location.href = url;
 }
 
 // ---- connection status ----
