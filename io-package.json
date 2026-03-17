@@ -152,8 +152,8 @@
     "adminTab": {
       "singleton": false,
       "name": {
-        "en": "Schlüter Thermostat",
-        "de": "Schlüter Thermostat"
+        "en": "Device Overview",
+        "de": "Geräteübersicht"
       },
       "icon": "schlueter-thermostat.png"
     },
