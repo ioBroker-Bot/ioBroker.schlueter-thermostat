@@ -49,9 +49,9 @@ global Key.
 
 ## Documentation
 
-[🇺🇸 Documentation](./docs/en/README.md)
+English Documentation](./docs/en/README.md)
 
-[🇩🇪 Dokumentation](./docs/de/README.md)
+[Deutsche Dokumentation](./docs/de/README.md)
 
 ##
 
