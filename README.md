@@ -111,6 +111,11 @@ flowchart TB
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+- (patricknitsch) Update Readme
+
 ### 0.5.1 (2026-03-18)
 
 - (copilot) Fix issue with configuration button in Tab
