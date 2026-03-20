@@ -154,8 +154,7 @@
       "name": {
         "en": "Device Overview",
         "de": "Geräteübersicht"
-      },
-      "icon": "schlueter-thermostat.png"
+      }
     },
     "dependencies": [
       {
